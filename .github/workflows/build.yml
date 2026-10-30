@@ -68,12 +68,17 @@ jobs:
 
       - name: Create signing.properties
         if: github.event_name != 'pull_request'
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          echo KEYSTORE_FILE=../keystore.jks > signing.properties
-          echo KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} >> signing.properties
-          echo KEY_ALIAS=${{ secrets.KEY_ALIAS }} >> signing.properties
-          echo KEY_PASSWORD=${{ secrets.KEY_PASSWORD }} >> signing.properties
-          echo ${{ secrets.KEYSTORE }} | base64 --decode > keystore.jks
+          echo "KEYSTORE_FILE=../keystore.jks" > signing.properties
+          echo "KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD}" >> signing.properties
+          echo "KEY_ALIAS=${KEY_ALIAS}" >> signing.properties
+          echo "KEY_PASSWORD=${KEY_PASSWORD}" >> signing.properties
+          printf '%s' "${KEYSTORE_B64}" | base64 --decode > keystore.jks
 
       - name: Download DF LKMs
         uses: actions/download-artifact@v7
