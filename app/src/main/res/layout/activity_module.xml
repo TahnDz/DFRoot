@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/moduleRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Flash a custom .ko module"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvAgentState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnPickKo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select .ko file" />
+
+    <TextView
+        android:id="@+id/tvKoPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:text="No file selected"
+        android:textSize="12sp" />
+
+    <EditText
+        android:id="@+id/etModuleId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Module ID (a-z 0-9 _ - .)"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <EditText
+        android:id="@+id/etModuleName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Display name"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <EditText
+        android:id="@+id/etModuleVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Version (default 1.0)"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <CheckBox
+        android:id="@+id/cbLoadNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Load now (insmod) and register for next boot" />
+
+    <Button
+        android:id="@+id/btnFlash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Flash / Re-flash module" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Refresh list" />
+
+        <Button
+            android:id="@+id/btnRemove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Remove selected" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textSize="12sp" />
+
+    <ListView
+        android:id="@+id/lvModules"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

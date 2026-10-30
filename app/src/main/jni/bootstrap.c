@@ -14,6 +14,10 @@
 #define PREFS_PATH "/data/user_de/0/df.root/shared_prefs/dfroot.xml"
 #define MODULES_DIR "/data/adb/modules"
 
+/* Implemented in agent.c: the root side job runner used by the app to flash
+ * custom .ko modules (and to re-flash / remove them). */
+void dfroot_agent_loop(void);
+
 static int pref_true(const char *buf, const char *key)
 {
     char needle[64];
@@ -193,8 +197,31 @@ static int disable_modules(void)
     return 0;
 }
 
-int main(void)
+/* Start the root agent in the background.  It stays alive after this process
+ * exits and serves module flashing requests coming from the DFRoot app. */
+static void start_agent(void)
 {
+    pid_t pid = fork();
+    if (pid < 0)
+        return;
+    if (pid == 0) {
+        setsid();
+        dfroot_agent_loop();
+        _exit(0);
+    }
+}
+
+int main(int argc, char **argv)
+{
+    /* `bootstrap --agent` runs only the job loop; used to (re)start the agent
+     * through `su` when the app talks to it after a reboot. */
+    if (argc > 1 && !strcmp(argv[1], "--agent")) {
+        dfroot_agent_loop();
+        return 0;
+    }
+
+    start_agent();
+
     touch("/dev/dfm1");
     char su_manager[256];
     int soft_reboot, disable_mods;

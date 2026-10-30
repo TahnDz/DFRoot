@@ -62,6 +62,8 @@ public class MainActivity extends Activity implements IReporter {
         getActionBar().setSubtitle("@diabl0w github/xda");
 
         btnRun = findViewById(R.id.btnRun);
+        findViewById(R.id.btnFlashModule).setOnClickListener(v ->
+                startActivity(new Intent(this, ModuleActivity.class)));
         outputScroll = findViewById(R.id.outputScroll);
         outputView = findViewById(R.id.outputView);
         spinnerSuManager = findViewById(R.id.spinnerSuManager);

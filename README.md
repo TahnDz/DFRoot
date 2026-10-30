@@ -48,11 +48,40 @@ A: Typically Android will detect bootloops and boot you into Safe Mode, otherwis
 
 ## Features
 
+- Flash custom `.ko` modules (and re-flash / remove them) through the SU manager
 - Start on Boot
 - Automatic soft reboot (if `late-load --soft-reboot` supported by your SU Manager)
 - RO Partition Protection
 - Disable all KernelSU modules, to recover from a broken one
 - Shizuku not needed — regain root without WiFi!
+
+## Flashing custom kernel modules
+
+DFRoot can install your own kernel module into the module directory of the SU
+manager, so it shows up in the manager app (KernelSU, KernelSU-Next, ...) and
+can be updated at any time.
+
+1. Root the device with DFRoot (the root agent is started by the same run)
+2. Open **Flash .ko** in the app
+3. Pick your `.ko` file, set a module id / display name and hit
+   **Flash / Re-flash module**
+4. The module is copied to `/data/adb/modules/<id>/` with a `module.prop`, gets
+   the SELinux label the loader expects and is loaded right away
+   (`finit_module`) when *Load now* is enabled
+
+Re-flashing works the same way: pick the same module id and the new `.ko`
+replaces the old one - a running instance is unloaded first, so the new
+version can bind its symbols. Long press an entry in the list (or use
+*Remove selected*) to delete a module again.
+
+The `.ko` has to be built for the kernel of the device, otherwise the load
+fails with `Invalid module format` / `version magic ... should be ...`.
+
+How it works: after the exploit, `dfroot.ko` starts `bootstrap` as uid 0.
+`bootstrap` spawns a small root agent that watches
+`/data/user_de/0/df.root/jobs/` for requests of the app and performs the
+flash/uninstall operations. If the device was rebooted and the agent is gone,
+the app tries to start it again through the `su` binary of the SU manager.
 
 ## How it works
 

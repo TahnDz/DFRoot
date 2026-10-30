@@ -49,7 +49,7 @@ set_source_files_properties(exp.c PROPERTIES
 target_link_libraries(dfroot log)
 target_link_options(dfroot PRIVATE -Wl,-z,max-page-size=16384)
 
-add_executable(bootstrap bootstrap.c)
+add_executable(bootstrap bootstrap.c agent.c)
 set_target_properties(bootstrap PROPERTIES
     PREFIX "lib"
     SUFFIX ".so"
